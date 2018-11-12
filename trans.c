@@ -1,34 +1,38 @@
 #include "myas.h"
 
-int instr_trans(char *op, char *args, char* mcode)
+int is_mem(char *args)
 {
-	// check syntax 
+		return 1;
+}
+
+int is_immediate(char *args)
+{
+		return 1;
+}
+
+int is_valid(char *op, char *args)
+{
+	//printf("if valid, return 1\n");
+	//printf("otherwise, return 0\n");
+
 	char *poppy;
 	char *des;
 	char str[128];
-	
+
 	strcpy(str,args);
 	poppy = strtok(str,",");
 	des = strtok(NULL , "\0");
 
-	if(!is_valid(op, args)){
-		printf("Error: %s %s is not valid\n", op, args);
-		return 0;
+	if(is_mem(poppy) == 1)
+	{
+		if(is_mem(des) == 1)
+			return 0;
+		else
+			return 1;
 	}
 
-	if(poppy[0] == '%' && des[0] == '%')
-		strcpy(mcode , "89");
-	else if((poppy[0] == '(' && des[0] =='%') || (poppy[0] == '-' && des[0] == '%'))
-		strcpy(mcode , "8b");
-	else if(poppy[0] == '0' && strstr(des,"%eax") != NULL)
-		strcpy(mcode , "a1");
-	else if(strstr(poppy,"%eax") != NULL && des[0] == '0')
-		strcpy(mcode , "a3");
-	else if(poppy[0] == '$' && des[0] == '%')
-	{
-		strcpy(mcode , "b8");
-	}
-		
-	
-	return 1;	
+	else if(is_immediate(des) == 1)
+		return 0;
+	else
+		return 1;
 }
