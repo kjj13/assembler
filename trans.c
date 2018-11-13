@@ -1,6 +1,6 @@
 #include "myas.h"
 
-int num_register(char *des)	// what is register des?
+int num_register(char *des)	// what is des's register_num?
 {
 	if(strcmp(des,"%eax")==0)
 		return EAX;
@@ -76,7 +76,7 @@ int instr_trans(char *op, char *args, char* mcode)
 			break;
 		}
 	}
-	else
+	else	// exception
 		return 0;
 	
 	return 1;	

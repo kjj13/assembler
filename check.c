@@ -2,9 +2,9 @@
 
 int is_mem(char *args)		// is args mem?
 {
-	if(strstr(args,"0x") != NULL)	// args have "0x"
+	if(strstr(args,"0x") != NULL)	  // args is mem
 		return 1;
-	else if(strstr(args,"(") != NULL) // args have "("
+	else if(strstr(args,"(") != NULL) // args is mem
 		return 1;
 	else
 		return 0;
@@ -12,13 +12,13 @@ int is_mem(char *args)		// is args mem?
 
 int is_immediate(char *args)	// is args immediate?
 {
-	if(args[0] == '$')	// args[0] is '$'
+	if(args[0] == '$')	// args is immediate
 		return 1;
 	else
 		return 0;
 }
 
-int is_valid(char *op, char *args)	// is args valid?
+int is_valid(char *op, char *args)	// is args valid? (when mem to mem , destination != immediate is exception)
 {
 	//printf("if valid, return 1\n");
 	//printf("otherwise, return 0\n");
