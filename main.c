@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-	char ifname[20];//hi
+	char ifname[20];
 	char ofname[20];
 	char op[4];
 	char args[256]; 
