@@ -1,83 +1,83 @@
 #include "myas.h"
 
-int num_register(char *des)
+int num_register(char *des)	// what is register des?
 {
-	if(strstr(des,"%eax")!=NULL)
+	if(strcmp(des,"%eax")==0)
 		return EAX;
-	else if(strstr(des,"%ecx")!=NULL)
+	else if(strcmp(des,"%ecx")==0)
 		return ECX;
-	else if(strstr(des,"%edx")!=NULL)
+	else if(strcmp(des,"%edx")==0)
 		return EDX;
-	else if(strstr(des,"%ebx")!=NULL)
+	else if(strcmp(des,"%ebx")==0)
 		return EBX;
-	else if(strstr(des,"%esp")!= NULL)
+	else if(strcmp(des,"%esp")==0)
 		return ESP;
-	else if(strstr(des,"%ebp")!= NULL)
+	else if(strcmp(des,"%ebp")==0)
 		return EBP;
-	else if(strstr(des,"%esi")!= NULL)
+	else if(strcmp(des,"%esi")==0)
 		return ESI;
-	else if(strstr(des,"%edi") != NULL)
+	else if(strcmp(des,"%edi")==0)
 		return EDI;
 }
 
 int instr_trans(char *op, char *args, char* mcode)
 {
 	// check syntax 
-	char *poppy;
-	char *des;
-	char str[128];
+	char *poppy;	// source
+	char *des;	// destination
+	char str[128];	// put args
 	
 	strcpy(str,args);
 	poppy = strtok(str,",");
 	des = strtok(NULL , "\0");
 
-	if(!is_valid(op, args)){
+	if(!is_valid(op, args)){ // args is not valid
 		printf("Error: %s %s is not valid\n", op, args);
 		return 0;
 	}
 
-	if(poppy[0] == '%' && des[0] == '%')
+	if(poppy[0] == '%' && des[0] == '%')	// reg to reg
 		strcpy(mcode , "89");
-	else if((poppy[0] == '(' && des[0] =='%') || (poppy[0] == '-' && des[0] == '%'))
+	else if((poppy[0] == '(' && des[0] =='%') || (poppy[0] == '-' && des[0] == '%')) // mem to reg
 		strcpy(mcode , "8b");
-	else if(poppy[0] == '0' && strstr(des,"%eax") != NULL)
+	else if(poppy[0] == '0' && strstr(des,"%eax") != NULL) // mem to reg(eax)
 		strcpy(mcode , "a1");
-	else if(strstr(poppy,"%eax") != NULL && des[0] == '0')
+	else if(strstr(poppy,"%eax") != NULL && des[0] == '0') // reg(eax) to mem
 		strcpy(mcode , "a3");
-	else if(poppy[0] == '$' && des[0] == '%')
+	else if(poppy[0] == '$' && des[0] == '%')	// immediate to reg
 	{
 		switch(num_register(des)){
-			printf("%c",'b');
 		case EAX:
-			printf("%x\n",EAX);
+			strcpy(mcode , "b8");
 			break;
 		case ECX:
-			printf("%x\n",ECX);
+			strcpy(mcode , "b9");
 			break;
 		case EDX:
-			printf("%x\n",EDX);
+			strcpy(mcode , "ba");
 			break;
 		case EBX:
-			printf("%x\n",EBX);
+			strcpy(mcode , "bb");
 			break;
 		case ESP:
-			printf("%x\n",ESP);
+			strcpy(mcode , "bc");
 			break;
 		case EBP:
-			printf("%x\n",EBP);
+			strcpy(mcode , "bd");
 			break;
 		case ESI:
-			printf("%x\n",ESI);
+			strcpy(mcode , "be");
 			break;
 		case EDI:
-			printf("%x\n",EDI);
+			strcpy(mcode , "bf");
 			break;
 		default:
 			printf("error");
 			break;
 		}
 	}
-		
+	else
+		return 0;
 	
 	return 1;	
 }
